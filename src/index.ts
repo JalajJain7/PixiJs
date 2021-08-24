@@ -63,8 +63,8 @@ car.addChild(wheel2);
 car.position.set(300,200);
 
 app.stage.addChild(car);
-const v=0.5;
-const w=0.03;
+const v=1;
+const w=0.04;//v should be equal to wr to resist the slipping
 car.position.x=0;
 
 
