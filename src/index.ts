@@ -65,9 +65,9 @@ var a=String(k);
 let text_3 = new PIXI.Text(a,{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 viewport.addChild(text_3);
 var south_x=w2+200;
-var south_y=h2;
+var south_y=h2-50;
 var north_x=w2-200;
-var north_y=h2;
+var north_y=h2-50;
 var v1_x=north_x-0.1;
 var v1_y=h2;
 var field=new Graphics();
@@ -82,11 +82,16 @@ app.ticker.add(function(){
         v.normalize();
         var q=new Vector2(0,0);
         q.addVectors(p,v);
+        var m=q.height/q.width;
+        var sino=m/Math.pow(1+Math.pow(m,2),1/2);
+        var coso=1/Math.pow(1+Math.pow(m,2),1/2);
+        var v2_x=v1_x-coso;
+        var v2_y=v1_y-sino;
         field.moveTo(v1_x,v1_y);
-        field.lineTo(q.width,q.height);
+        field.lineTo(v2_x,v2_y);
         v1_x=q.width;
         v1_y=q.height;
-        if(q.height<=h2)
+        if(q.height>(h2-50))
         {
             break;
         }
