@@ -42,6 +42,7 @@ clampy.y = app.screen.height / 2;
 var w=(window.innerWidth/2)-200;
 var h=(window.innerHeight/2)-50;
 var w2=window.innerWidth/2;
+var h2=window.innerHeight/2;
 
 var south_pole=new Graphics();
 south_pole.beginFill(0xff0000);
@@ -58,8 +59,26 @@ north_pole.addChild(text_1);
 let text_2 = new PIXI.Text('N',{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 text_2.position.set(w+25,h+25);
 south_pole.addChild(text_2);
-
-var b=Vector2.prototype.width;
-var a=String(b);
+var b=new Vector2(0,0);
+var k=b.width;
+var a=String(k);
 let text_3 = new PIXI.Text(a,{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 viewport.addChild(text_3);
+var south_x=w2+200;
+var south_y=h2;
+var north_x=w2-200;
+var north_y=h2;
+var v1_x=north_x-0.1;
+var v1_y=h2;
+var field=new Graphics();
+field.lineStyle(1, 0xFEEB77, 1);
+app.ticker.add(function(){
+	while(true){
+        var p=new Vector2(v1_x,v1_y);
+        var south_v=new Vector2(south_x-v1_x,south_y-v1_y);
+        var north_v=new Vector2(v1_x-north_x,v1_y-north_y);
+        var v=new Vector2(0,0);
+        v.addVectors(south_v,north_v);
+        v.normalize();
+    }
+})
