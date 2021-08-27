@@ -5,7 +5,9 @@
     "build": "parcel build src/index.html"
   },
   "dependencies": {
-    "pixi.js": "^6.1.2"
+    "pixi-viewport": "^4.32.0",
+    "pixi.js": "^6.1.2",
+    "puxi.js": "0.0.5"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.5",

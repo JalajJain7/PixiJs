@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script type="module">
+    import PUXI from PUXI;
+    const app = new PIXI.Application({ 	view: document.getElementById("pixi-canvas") ,
+	//resolution: window.devicePixelRatio || 1,
+	backgroundColor: 0x6495ed,
+	width: 640,
+	height: 480 });
+
+const uxStage = new PUXI.Stage({
+  width: 512,
+  height: 512,
+});
+
+app.stage.addChild(uxStage);
+
+uxStage.addChild(new PUXI.Button({
+  text: "Hello world!"
+}));
+
+uxStage.addChild(new PUXI.Text({
+  value: "Click me!"
+}).setLayoutOptions({
+ optioms: new PUXI.FastLayoutOptions(
+     PUXI.LayoutOptions.WRAP_CONTENT, // width
+     60, // height
+     .5, 5., // x, y (center)
+     PUXI.FastLayoutOptions.CENTER_ANCHOR // properly center
+  )
+}).setPadding(4, 6) // horizontal/vertical padding
+    .setBackground(0xffaabb) // background color (can use a PIXI.Graphics too)
+    .setBackgroundAlpha(.5) // alpha for background
+    .setElevation(2) // drop-shadow on background!
+);
+</script>
+</html>
