@@ -74,19 +74,28 @@ var north_x=w2-200;//this is the extreme x cordinate of north pole
 var north_y=h2;//this is the extreme y cordinate of north pole
 //the above co ordinates is obtained because we are workin acc to the point particle
 var v1_x=north_x-0.1;
-var v1_y=h2;
+var v1_y=h2-50;
 //above two cordinates is the nearby point of north pole from where the line should start
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
 app.ticker.add(function(){
 	while(true){
         var p=new Vector2(v1_x,v1_y);//this is the vector of nearby point
-        var south_v=new Vector2(south_x-v1_x,south_y-v1_y);//vector of that nearby point from south pole
-        var north_v=new Vector2(v1_x-north_x,v1_y-north_y);//vector of that nearby point from north pole
-        var v=new Vector2(0,0);//resultant vector from both north pole and south pole
-        v.addVectors(south_v,north_v);
-        v.normalize();//making it unit vetor
-        var m=v.height/v.width;//finding the slope of unit vector
+        var south_v=new Vector2(south_x,south_y);//vector of that nearby point from south pole
+        var south_mag=2/Math.pow(south_v.distanceTo(p),3);
+
+        var north_v=new Vector2(v1_x,v1_y);//vector of that nearby point from north pole
+        var north_mag=2/Math.pow(north_v.distanceTo(p),3);
+        var south_v_p=new Vector2(south_x-v1_x,south_y-v1_y);
+        south_v_p.normalize();
+        south_v_p.setLength(south_mag);
+        var north_v_p=new Vector2(v1_x-north_x,v1_y-north_y);
+        north_v_p.normalize();
+        north_v_p.setLength(north_mag);
+        var q=new Vector2(0,0);
+        q.addVectors(south_v_p,north_v_p);
+        
+        var m=q.height/q.width;//finding the slope of unit vector
         var sino=m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
         var coso=1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
         var v2_x=v1_x-coso;//finding the point nearby along the vector
