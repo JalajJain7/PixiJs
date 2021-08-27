@@ -43,57 +43,62 @@ var w=(window.innerWidth/2)-200;
 var h=(window.innerHeight/2)-50;
 var w2=window.innerWidth/2;
 var h2=window.innerHeight/2;
-
+//the above variables is added is as per to add magnet at center 
 var south_pole=new Graphics();
 south_pole.beginFill(0xff0000);
 south_pole.drawRect(w,h,200,100);
 viewport.addChild(south_pole);
+//above was for south opole rectangle
 var north_pole=new Graphics();
 north_pole.beginFill(0x2211ad);
 north_pole.drawRect(w2,h,200,100);
 viewport.addChild(north_pole);
-
+//above was for north pole rectangle
 let text_1 = new PIXI.Text('S',{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 text_1.position.set(w+355,h+25);
 north_pole.addChild(text_1);
+//above is for 's'  written on bar
 let text_2 = new PIXI.Text('N',{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 text_2.position.set(w+25,h+25);
 south_pole.addChild(text_2);
+//above is for 'n'  written on bar
 var b=new Vector2(0,0);
 var k=b.width;
 var a=String(k);
 let text_3 = new PIXI.Text(a,{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 viewport.addChild(text_3);
-var south_x=w2+200;
-var south_y=h2;
-var north_x=w2-200;
-var north_y=h2;
+//above is for testing wether the vectors module is working or not
+var south_x=w2+200;//this is the extreme x cordinate of southpole
+var south_y=h2;//this is the extreme y cordinate of south pole
+var north_x=w2-200;//this is the extreme x cordinate of north pole
+var north_y=h2;//this is the extreme y cordinate of north pole
+//the above co ordinates is obtained because we are workin acc to the point particle
 var v1_x=north_x-0.1;
 var v1_y=h2;
+//above two cordinates is the nearby point of north pole from where the line should start
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
 app.ticker.add(function(){
 	while(true){
-        var p=new Vector2(v1_x,v1_y);
-        var south_v=new Vector2(south_x-v1_x,south_y-v1_y);
-        var north_v=new Vector2(v1_x-north_x,v1_y-north_y);
-        var v=new Vector2(0,0);
+        var p=new Vector2(v1_x,v1_y);//this is the vector of nearby point
+        var south_v=new Vector2(south_x-v1_x,south_y-v1_y);//vector of that nearby point from south pole
+        var north_v=new Vector2(v1_x-north_x,v1_y-north_y);//vector of that nearby point from north pole
+        var v=new Vector2(0,0);//resultant vector from both north pole and south pole
         v.addVectors(south_v,north_v);
-        v.normalize();
-        var q=new Vector2(0,0);
-        q.addVectors(p,v);
-        var m=q.height/q.width;
-        var sino=m/Math.pow(1+Math.pow(m,2),1/2);
-        var coso=1/Math.pow(1+Math.pow(m,2),1/2);
-        var v2_x=v1_x-coso;
-        var v2_y=v1_y-sino;
-        field.moveTo(v1_x,v1_y);
-        field.lineTo(v2_x,v2_y);
-        v1_x=q.width;
-        v1_y=q.height;
-        if(q.height>(h2-50))
+        v.normalize();//making it unit vetor
+        var m=v.height/v.width;//finding the slope of unit vector
+        var sino=m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+        var coso=1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+        var v2_x=v1_x-coso;//finding the point nearby along the vector
+        var v2_y=v1_y-sino;//finding the point nearby along the vector
+        field.moveTo(v1_x,v1_y);//making the line
+        field.lineTo(v2_x,v2_y);//making the line
+        v1_x=v2_x;//assigning p=q
+        v1_y=v2_y;//assigning p=q
+        if(north_x>(h2-50))
         {
             break;
         }
     }
 })
+viewport.addChild(field);
