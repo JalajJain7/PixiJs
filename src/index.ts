@@ -15,8 +15,8 @@ const app = new PIXI.Application({
 const viewport = new Viewport({
     // screenWidth: window.innerWidth,
     // screenHeight: window.innerHeight,
-    worldWidth: 100,
-    worldHeight: 100,
+    worldWidth: 1000,
+    worldHeight: 1000,
 
     interaction: app.renderer.plugins.interaction // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
 })
@@ -73,7 +73,7 @@ var south_y=h2;//this is the extreme y cordinate of south pole
 var north_x=w2-200;//this is the extreme x cordinate of north pole
 var north_y=h2;//this is the extreme y cordinate of north pole
 //the above co ordinates is obtained because we are workin acc to the point particle
-var v1_x=north_x-0.1;
+var v1_x=north_x-1;
 var v1_y=h2-50;
 //above two cordinates is the nearby point of north pole from where the line should start
 var field=new Graphics();
@@ -94,6 +94,7 @@ app.ticker.add(function(){
         north_v_p.setLength(north_mag);
         var q=new Vector2(0,0);
         q.addVectors(south_v_p,north_v_p);
+        q.normalize();
         
         var m=q.height/q.width;//finding the slope of unit vector
         var sino=m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
@@ -104,7 +105,7 @@ app.ticker.add(function(){
         field.lineTo(v2_x,v2_y);//making the line
         v1_x=v2_x;//assigning p=q
         v1_y=v2_y;//assigning p=q
-        if(north_x>(h2-50))
+        if(v2_x>=w2||0>=v2_x||v2_x>=window.innerWidth||0>=v2_y||v2_y>=window.innerHeight)
         {
             break;
         }
