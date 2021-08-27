@@ -81,21 +81,21 @@ field.lineStyle(1, 0xFEEB77, 1);
 app.ticker.add(function(){
 	while(true){
         var p=new Vector2(v1_x,v1_y);//this is the vector of nearby point
-        var south_v=new Vector2(south_x,south_y);//vector of that nearby point from south pole
-        var south_mag=2/Math.pow(south_v.distanceTo(p),3);
+        var south_v=new Vector2(south_x,south_y);//south pole vector
+        var south_mag=2/Math.pow(south_v.distanceTo(p),3);//constant that have to be multiplied with vector
 
-        var north_v=new Vector2(v1_x,v1_y);//vector of that nearby point from north pole
-        var north_mag=2/Math.pow(north_v.distanceTo(p),3);
-        var south_v_p=new Vector2(south_x-v1_x,south_y-v1_y);
-        south_v_p.normalize();
-        south_v_p.setLength(south_mag);
-        var north_v_p=new Vector2(v1_x-north_x,v1_y-north_y);
-        north_v_p.normalize();
-        north_v_p.setLength(north_mag);
+        var north_v=new Vector2(north_x,north_y);//north pole vector
+        var north_mag=2/Math.pow(north_v.distanceTo(p),3);//constant that have to be multiplied with vector
+        var south_v_p=new Vector2(south_x-v1_x,south_y-v1_y);//vector from the nearby point tosouth pole
+        south_v_p.normalize();//sets to unit vector
+        south_v_p.setLength(south_mag);//setting length of vector
+        var north_v_p=new Vector2(v1_x-north_x,v1_y-north_y);//vector from the nearby point to north pole
+        north_v_p.normalize();//setting to unit
+        north_v_p.setLength(north_mag);//setting the length 
         var q=new Vector2(0,0);
-        q.addVectors(south_v_p,north_v_p);
+        q.addVectors(south_v_p,north_v_p);//adding both vectors
         q.normalize();
-        
+        //let dl = 1 pixel
         var m=q.height/q.width;//finding the slope of unit vector
         var sino=m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
         var coso=1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
