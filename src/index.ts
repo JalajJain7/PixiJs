@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
 import { Graphics } from 'pixi.js'
+import { Vector2 } from './vector'
 
 const app = new PIXI.Application({
     view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -57,3 +58,8 @@ north_pole.addChild(text_1);
 let text_2 = new PIXI.Text('N',{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 text_2.position.set(w+25,h+25);
 south_pole.addChild(text_2);
+
+var b=Vector2.prototype.width;
+var a=String(b);
+let text_3 = new PIXI.Text(a,{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
+viewport.addChild(text_3);
