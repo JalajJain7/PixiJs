@@ -80,5 +80,15 @@ app.ticker.add(function(){
         var v=new Vector2(0,0);
         v.addVectors(south_v,north_v);
         v.normalize();
+        var q=new Vector2(0,0);
+        q.addVectors(p,v);
+        field.moveTo(v1_x,v1_y);
+        field.lineTo(q.width,q.height);
+        v1_x=q.width;
+        v1_y=q.height;
+        if(q.height<=h2)
+        {
+            break;
+        }
     }
 })
