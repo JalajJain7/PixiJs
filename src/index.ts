@@ -73,23 +73,29 @@ var south_y=h2;//this is the extreme y cordinate of south pole
 var north_x=w2-200;//this is the extreme x cordinate of north pole
 var north_y=h2;//this is the extreme y cordinate of north pole
 //the above co ordinates is obtained because we are workin acc to the point particle
-function fieldlines(){
-    const v1_x=north_x-1;
-const v1_y=h2-50;
 var cons=100;
 const south_v=new Vector2(south_x,south_y);//south pole vector
 const north_v=new Vector2(north_x,north_y);//north pole vector
+function fieldlines(){
+var i=0;
+for(i=0;i<=100;i++){
+
+    var v1_x=north_x-1;
+var v1_y=h2-50+i;
+// var cons=100;
+// const south_v=new Vector2(south_x,south_y);//south pole vector
+// const north_v=new Vector2(north_x,north_y);//north pole vector
 
 //above two cordinates is the nearby point of north pole from where the line should start
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
 //app.ticker.add(function(){
-    let counter=0;
+    var counter=0;
 
-    let p=new Vector2(v1_x,v1_y);
+    var p=new Vector2(v1_x,v1_y);
     field.moveTo(p.x,p.y);//making the line
 	while(true){
-        if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.y>(h2-50))
+        if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x>w2)
         {
             break;
         }
@@ -130,7 +136,56 @@ field.lineStyle(1, 0xFEEB77, 1);
         p.set(v2_x,v2_y);
       
     }
+    var v1_x=south_x+1;
+var v1_y=h2-50+i;
+ counter=0;
+
+ p.set(v1_x,v1_y);
+field.moveTo(p.x,p.y);//making the line
+while(true){
+    if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x<w2)
+    {
+        break;
+    }
+    
+    
+    var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
+
+    var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
+
+    var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
+    south_v_p.normalize();//sets to unit vector
+    south_v_p.setLength(south_mag);//setting length of vector
+    // south_v_p.negate();
+
+    var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
+    north_v_p.normalize();//setting to unit
+    north_v_p.setLength(north_mag);//setting the length 
+    // north_v_p.negate();
+
+    var q=new Vector2(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
+    q.normalize();
+
+   // console.log(p);
+    //let dl = 1 pixel
+
+    
+     var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+     var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+
+     var v2_x=p.x-coso*10;//finding the point nearby along the vector
+     var v2_y=p.y-sino*10;//finding the point nearby along the vector
+    //var v=new Vector2(0,0);
+    //v.addVectors(p,q);
+
+   
+    field.lineTo(v2_x,v2_y);//making the line
+    
+    p.set(v2_x,v2_y);
+  
+}
 //})
 viewport.addChild(field);
+}
 }
 fieldlines();
