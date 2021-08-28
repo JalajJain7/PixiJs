@@ -73,7 +73,8 @@ var south_y=h2;//this is the extreme y cordinate of south pole
 var north_x=w2-200;//this is the extreme x cordinate of north pole
 var north_y=h2;//this is the extreme y cordinate of north pole
 //the above co ordinates is obtained because we are workin acc to the point particle
-const v1_x=north_x-1;
+function fieldlines(){
+    const v1_x=north_x-1;
 const v1_y=h2-50;
 var cons=100;
 const south_v=new Vector2(south_x,south_y);//south pole vector
@@ -88,7 +89,7 @@ field.lineStyle(1, 0xFEEB77, 1);
     let p=new Vector2(v1_x,v1_y);
     field.moveTo(p.x,p.y);//making the line
 	while(true){
-        if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight)
+        if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.y>(h2-50))
         {
             break;
         }
@@ -131,3 +132,5 @@ field.lineStyle(1, 0xFEEB77, 1);
     }
 //})
 viewport.addChild(field);
+}
+fieldlines();
