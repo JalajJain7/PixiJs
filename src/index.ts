@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
-import { Graphics } from 'pixi.js'
+import { Graphics, PI_2 } from 'pixi.js'
 import { Vector2 } from './vector'
 
 const app = new PIXI.Application({
@@ -75,6 +75,7 @@ var north_y=h2;//this is the extreme y cordinate of north pole
 //the above co ordinates is obtained because we are workin acc to the point particle
 var v1_x=north_x-1;
 var v1_y=h2-50;
+var cons=100;
 //above two cordinates is the nearby point of north pole from where the line should start
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
@@ -82,10 +83,10 @@ app.ticker.add(function(){
 	while(true){
         var p=new Vector2(v1_x,v1_y);//this is the vector of nearby point
         var south_v=new Vector2(south_x,south_y);//south pole vector
-        var south_mag=2/Math.pow(south_v.distanceTo(p),3);//constant that have to be multiplied with vector
+        var south_mag=cons/Math.pow(south_v.distanceTo(p),3);//constant that have to be multiplied with vector
 
         var north_v=new Vector2(north_x,north_y);//north pole vector
-        var north_mag=2/Math.pow(north_v.distanceTo(p),3);//constant that have to be multiplied with vector
+        var north_mag=cons/Math.pow(north_v.distanceTo(p),3);//constant that have to be multiplied with vector
         var south_v_p=new Vector2(south_x-v1_x,south_y-v1_y);//vector from the nearby point tosouth pole
         south_v_p.normalize();//sets to unit vector
         south_v_p.setLength(south_mag);//setting length of vector
@@ -99,8 +100,8 @@ app.ticker.add(function(){
         var m=q.height/q.width;//finding the slope of unit vector
         var sino=m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
         var coso=1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-        var v2_x=v1_x-coso;//finding the point nearby along the vector
-        var v2_y=v1_y-sino;//finding the point nearby along the vector
+        var v2_x=v1_x+coso;//finding the point nearby along the vector
+        var v2_y=v1_y+sino;//finding the point nearby along the vector
         field.moveTo(v1_x,v1_y);//making the line
         field.lineTo(v2_x,v2_y);//making the line
         v1_x=v2_x;//assigning p=q
