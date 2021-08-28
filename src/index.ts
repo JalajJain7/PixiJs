@@ -81,6 +81,10 @@ var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
 app.ticker.add(function(){
 	while(true){
+        if(v2_x>=w2||0>=v2_x||v2_x>=window.innerWidth||0>=v2_y||v2_y>=window.innerHeight)
+        {
+            break;
+        }
         var p=new Vector2(v1_x,v1_y);//this is the vector of nearby point
         var south_v=new Vector2(south_x,south_y);//south pole vector
         var south_mag=cons/Math.pow(south_v.distanceTo(p),3);//constant that have to be multiplied with vector
@@ -106,10 +110,7 @@ app.ticker.add(function(){
         field.lineTo(v2_x,v2_y);//making the line
         v1_x=v2_x;//assigning p=q
         v1_y=v2_y;//assigning p=q
-        if(v2_x>=w2||0>=v2_x||v2_x>=window.innerWidth||0>=v2_y||v2_y>=window.innerHeight)
-        {
-            break;
-        }
+        
     }
 })
 viewport.addChild(field);
