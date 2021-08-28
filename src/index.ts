@@ -104,8 +104,8 @@ app.ticker.add(function(){
         var m=q.height/q.width;//finding the slope of unit vector
         var sino=m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
         var coso=1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-        var v2_x=v1_x+coso;//finding the point nearby along the vector
-        var v2_y=v1_y+sino;//finding the point nearby along the vector
+        var v2_x=v1_x-coso;//finding the point nearby along the vector
+        var v2_y=v1_y-sino;//finding the point nearby along the vector
         field.moveTo(v1_x,v1_y);//making the line
         field.lineTo(v2_x,v2_y);//making the line
         v1_x=v2_x;//assigning p=q
