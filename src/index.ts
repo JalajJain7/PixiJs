@@ -182,8 +182,10 @@ while(true){
     field.lineTo(v2_x,v2_y);//making the line
     
     p.set(v2_x,v2_y);
-  
+
 }
+field.moveTo(w2-200,h2-50+i);
+field.lineTo(w2+200,h2-50+i);
 //})
 viewport.addChild(field);
 }
