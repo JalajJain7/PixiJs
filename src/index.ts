@@ -78,10 +78,20 @@ const south_v=new Vector2(south_x,south_y);//south pole vector
 const north_v=new Vector2(north_x,north_y);//north pole vector
 function fieldlines(){
 var i=0;
-for(i=0;i<=100;i++){
+for(i=0;i<=40;i++){
 
     var v1_x=north_x-1;
-var v1_y=h2-50+i;
+    if(i>9&&i<=29)
+    {
+        var v1_y=h2-50+49+((i-9)*0.1);
+    }
+    else if(i<=9){
+        var v1_y=h2-50+40+i;
+    }
+    else{
+        var v1_y=h2-50+51+(i-30);
+    }
+
 // var cons=100;
 // const south_v=new Vector2(south_x,south_y);//south pole vector
 // const north_v=new Vector2(north_x,north_y);//north pole vector
@@ -137,7 +147,16 @@ field.lineStyle(1, 0xFEEB77, 1);
       
     }
     var v1_x=south_x+1;
-var v1_y=h2-50+i;
+    if(i>9&&i<=29)
+    {
+        var v1_y=h2-50+49+((i-9)*0.1);
+    }
+    else if(i<=9){
+        var v1_y=h2-50+40+i;
+    }
+    else{
+        var v1_y=h2-50+51+(i-30);
+    }
  counter=0;
 
  p.set(v1_x,v1_y);
@@ -184,8 +203,7 @@ while(true){
     p.set(v2_x,v2_y);
 
 }
-field.moveTo(w2-200,h2-50+i);
-field.lineTo(w2+200,h2-50+i);
+
 //})
 viewport.addChild(field);
 }
