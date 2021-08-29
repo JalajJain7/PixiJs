@@ -10,7 +10,7 @@ const app = new PIXI.Application({
     height:window.innerHeight,
     antialias:true
 })
-
+app.stage.interactive=true;
 
 const viewport = new Viewport({
     // screenWidth: window.innerWidth,
@@ -37,7 +37,7 @@ clampy.anchor.set(0.5);
 
 clampy.x = app.screen.width / 2;
 clampy.y = app.screen.height / 2;
-// viewport.addChild(clampy);
+
 
 var w=(window.innerWidth/2)-200;
 var h=(window.innerHeight/2)-50;
@@ -79,13 +79,30 @@ field.lineStyle(1, 0xFEEB77, 1);
 
 function arrow(val_x,val_y,m){
 var m1=(m-1)/(m+1);
-var px=val_x+5*(1/Math.pow(1+Math.pow(m1,2),1/2));
-var py=val_y+5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
+var px=0;
+var py=0;
+if(m>-1){
+    px=val_x+5*(1/Math.pow(1+Math.pow(m1,2),1/2));
+     py=val_y+5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
+}
+else{
+     px=val_x+5*(1/Math.pow(1+Math.pow(m1,2),1/2));
+     py=val_y-5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
+}
+
 field.lineTo(px,py);
 field.moveTo(val_x,val_y);
 var m2=(1+m)/(1-m);
-var px=val_x+5*(1/Math.pow(1+Math.pow(m2,2),1/2));
-var py=val_y+5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
+if(m>1)
+{
+     px=val_x+5*(1/Math.pow(1+Math.pow(m2,2),1/2));
+     py=val_y-5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
+}
+else{
+    px=val_x+5*(1/Math.pow(1+Math.pow(m2,2),1/2));
+    py=val_y+5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
+}
+
 field.lineTo(px,py);
 field.moveTo(val_x,val_y);
 }
@@ -232,5 +249,20 @@ while(true){
 
 }
 }
+const needle:PIXI.Sprite=PIXI.Sprite.from("compass-needle.png");
+needle.anchor.set(0.5);
+// needle.height=200;
+// needle.width=166.66;
+
+// viewport.addChild(clampy);
+
+app.stage.on('click',moveneedle);
+
+function moveneedle(e){
+    let pos=e.data.global;
+    needle.x=pos.x;
+    needle.y=pos.y;
+}
 viewport.addChild(field);
+viewport.addChild(needle);
 fieldlines();
