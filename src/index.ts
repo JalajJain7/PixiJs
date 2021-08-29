@@ -62,20 +62,35 @@ let text_2 = new PIXI.Text('N',{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1
 text_2.position.set(w+25,h+25);
 south_pole.addChild(text_2);
 //above is for 'n'  written on bar
-var b=new Vector2(0,0);
-var k=b.width;
-var a=String(k);
-let text_3 = new PIXI.Text(a,{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
-viewport.addChild(text_3);
-//above is for testing wether the vectors module is working or not
+
 var south_x=w2+200;//this is the extreme x cordinate of southpole
 var south_y=h2;//this is the extreme y cordinate of south pole
 var north_x=w2-200;//this is the extreme x cordinate of north pole
 var north_y=h2;//this is the extreme y cordinate of north pole
+
 //the above co ordinates is obtained because we are workin acc to the point particle
+
 var cons=100;
 const south_v=new Vector2(south_x,south_y);//south pole vector
 const north_v=new Vector2(north_x,north_y);//north pole vector
+
+var field=new Graphics();
+field.lineStyle(1, 0xFEEB77, 1);
+
+function arrow(val_x,val_y,m){
+var m1=(m-1)/(m+1);
+var px=val_x+5*(1/Math.pow(1+Math.pow(m1,2),1/2));
+var py=val_y+5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
+field.lineTo(px,py);
+field.moveTo(val_x,val_y);
+var m2=(1+m)/(1-m);
+var px=val_x+5*(1/Math.pow(1+Math.pow(m2,2),1/2));
+var py=val_y+5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
+field.lineTo(px,py);
+field.moveTo(val_x,val_y);
+}
+
+
 function fieldlines(){
 var i=0;
 for(i=0;i<=40;i++){
@@ -97,13 +112,13 @@ for(i=0;i<=40;i++){
 // const north_v=new Vector2(north_x,north_y);//north pole vector
 
 //above two cordinates is the nearby point of north pole from where the line should start
-var field=new Graphics();
-field.lineStyle(1, 0xFEEB77, 1);
+
 //app.ticker.add(function(){
     var counter=0;
 
     var p=new Vector2(v1_x,v1_y);
     field.moveTo(p.x,p.y);//making the line
+    var stopper=0;
 	while(true){
         if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x>w2)
         {
@@ -140,8 +155,13 @@ field.lineStyle(1, 0xFEEB77, 1);
         //var v=new Vector2(0,0);
         //v.addVectors(p,q);
  
+        var m=sino/coso;
        
         field.lineTo(v2_x,v2_y);//making the line
+        if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
+            arrow(v2_x,v2_y,m);
+            stopper++;
+        }
         
         p.set(v2_x,v2_y);
       
@@ -158,7 +178,7 @@ field.lineStyle(1, 0xFEEB77, 1);
         var v1_y=h2-50+51+(i-30);
     }
  counter=0;
-
+stopper=0;
  p.set(v1_x,v1_y);
 field.moveTo(p.x,p.y);//making the line
 while(true){
@@ -197,15 +217,19 @@ while(true){
     //var v=new Vector2(0,0);
     //v.addVectors(p,q);
 
-   
+    var m=sino/coso;
     field.lineTo(v2_x,v2_y);//making the line
-    
+    if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
+        arrow(v2_x,v2_y,m);
+        stopper++;
+    }
     p.set(v2_x,v2_y);
 
 }
 
 //})
+
+}
+}
 viewport.addChild(field);
-}
-}
 fieldlines();
