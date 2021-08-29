@@ -77,7 +77,7 @@ const north_v=new Vector2(north_x,north_y);//north pole vector
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
 
-function arrow(val_x,val_y,m){
+function arrow_1(val_x,val_y,m){
 var m1=(m-1)/(m+1);
 var px=val_x+5*(1/Math.pow(1+Math.pow(m1,2),1/2));
 var py=val_y+5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
@@ -89,6 +89,18 @@ var py=val_y+5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
 field.lineTo(px,py);
 field.moveTo(val_x,val_y);
 }
+function arrow_2(val_x,val_y,m){
+    var m1=(m-1)/(m+1);
+    var px=val_x-5*(1/Math.pow(1+Math.pow(m1,2),1/2));
+    var py=val_y-5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
+    field.lineTo(px,py);
+    field.moveTo(val_x,val_y);
+    var m2=(1+m)/(1-m);
+    var px=val_x-5*(1/Math.pow(1+Math.pow(m2,2),1/2));
+    var py=val_y-5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
+    field.lineTo(px,py);
+    field.moveTo(val_x,val_y);
+    }
 
 
 function fieldlines(){
@@ -159,7 +171,7 @@ for(i=0;i<=40;i++){
        
         field.lineTo(v2_x,v2_y);//making the line
         if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
-            arrow(v2_x,v2_y,m);
+            arrow_1(v2_x,v2_y,m);
             stopper++;
         }
         
@@ -220,7 +232,7 @@ while(true){
     var m=sino/coso;
     field.lineTo(v2_x,v2_y);//making the line
     if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
-        arrow(v2_x,v2_y,m);
+        arrow_2(v2_x,v2_y,m);
         stopper++;
     }
     p.set(v2_x,v2_y);
