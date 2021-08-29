@@ -111,19 +111,13 @@ field.moveTo(val_x,val_y);
 
 function fieldlines(){
 var i=0;
-for(i=0;i<=40;i++){
-
-    var v1_x=north_x-1;
-    if(i>9&&i<=29)
-    {
-        var v1_y=h2-50+49+((i-9)*0.1);
-    }
-    else if(i<=9){
-        var v1_y=h2-50+40+i;
-    }
-    else{
-        var v1_y=h2-50+51+(i-30);
-    }
+let N=30;
+let dTh=2*Math.PI/N;
+for(let th=0;th<=Math.PI*2;th+=dTh){
+    
+   var v1_x=north_x+10*Math.cos(th);
+   var v1_y=north_y+10*Math.sin(th);
+    
 
 // var cons=100;
 // const south_v=new Vector2(south_x,south_y);//south pole vector
@@ -184,17 +178,9 @@ for(i=0;i<=40;i++){
         p.set(v2_x,v2_y);
       
     }
-    var v1_x=south_x+1;
-    if(i>9&&i<=29)
-    {
-        var v1_y=h2-50+49+((i-9)*0.1);
-    }
-    else if(i<=9){
-        var v1_y=h2-50+40+i;
-    }
-    else{
-        var v1_y=h2-50+51+(i-30);
-    }
+    v1_x=south_x+10*Math.cos(th);
+    v1_y=south_y+10*Math.sin(th);
+    
  counter=0;
 stopper=0;
  p.set(v1_x,v1_y);
