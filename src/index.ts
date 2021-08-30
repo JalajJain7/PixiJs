@@ -83,6 +83,7 @@ var north_y=h2;//this is the extreme y cordinate of north pole
 var cons=100;
 const south_v=new Vector2(south_x,south_y);//south pole vector
 const north_v=new Vector2(north_x,north_y);//north pole vector
+var q=new Vector2(0,0);
 
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
@@ -150,7 +151,7 @@ function fieldlines(){
             north_v_p.setLength(north_mag);//setting the length 
             // north_v_p.negate();
 
-            var q=new Vector2(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
+            q.set(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
             q.normalize();
 
             var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
@@ -209,7 +210,7 @@ function fieldlines(){
             north_v_p.setLength(north_mag);//setting the length 
             // north_v_p.negate();
 
-            var q=new Vector2(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
+            q.set(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
             q.normalize();
         
             var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
