@@ -10,6 +10,7 @@ const app = new PIXI.Application({
     height:window.innerHeight,
     antialias:true
 })
+
 app.stage.interactive=true;
 
 const viewport = new Viewport({
@@ -17,10 +18,11 @@ const viewport = new Viewport({
     // screenHeight: window.innerHeight,
     worldWidth: 1000,
     worldHeight: 1000,
-
     interaction: app.renderer.plugins.interaction // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
 })
+
 app.stage.addChild(viewport)
+
 viewport
     .drag()
     .pinch()
@@ -31,36 +33,44 @@ viewport
 // sprite.tint = 0xff0000
 // sprite.width = sprite.height = 100
 // sprite.position.set(100, 100)
+
 const clampy: PIXI.Sprite = PIXI.Sprite.from("clampy.png");
 
 clampy.anchor.set(0.5);
-
 clampy.x = app.screen.width / 2;
 clampy.y = app.screen.height / 2;
-
 
 var w=(window.innerWidth/2)-200;
 var h=(window.innerHeight/2)-50;
 var w2=window.innerWidth/2;
 var h2=window.innerHeight/2;
+
 //the above variables is added is as per to add magnet at center 
+
 var south_pole=new Graphics();
 south_pole.beginFill(0xff0000);
 south_pole.drawRect(w,h,200,100);
 viewport.addChild(south_pole);
+
 //above was for south opole rectangle
+
 var north_pole=new Graphics();
 north_pole.beginFill(0x2211ad);
 north_pole.drawRect(w2,h,200,100);
 viewport.addChild(north_pole);
+
 //above was for north pole rectangle
+
 let text_1 = new PIXI.Text('S',{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 text_1.position.set(w+355,h+25);
 north_pole.addChild(text_1);
+
 //above is for 's'  written on bar
+
 let text_2 = new PIXI.Text('N',{fontFamily : 'Arial', fontSize: 34, fill : 0x1d1c1c, align : 'center'});
 text_2.position.set(w+25,h+25);
 south_pole.addChild(text_2);
+
 //above is for 'n'  written on bar
 
 var south_x=w2+200;//this is the extreme x cordinate of southpole
@@ -102,134 +112,132 @@ field.moveTo(val_x,val_y);
 
 }
 
-
+function drawlines(){
+    
+}
 
 function fieldlines(){
-var i=0;
-let N=30;
-let dTh=2*Math.PI/N;
-for(let th=0;th<=Math.PI*2;th+=dTh){
+
+    let N=30;
+    let dTh=2*Math.PI/N;
+
+    for(let th=0;th<=Math.PI*2;th+=dTh){
+        
+        var v1_x=north_x+10*Math.cos(th);
+        var v1_y=north_y+10*Math.sin(th);
+        
+        var counter=0;
+        var stopper=0;
+        var stopper_1=0;
+
+        var p=new Vector2(v1_x,v1_y);
+
+        field.moveTo(p.x,p.y);//making the line
     
-   var v1_x=north_x+10*Math.cos(th);
-   var v1_y=north_y+10*Math.sin(th);
+        while(true){
+
+            if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x>w2)
+            {
+                break;
+            }
+            
+            var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
+            var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
+
+            var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
+            south_v_p.normalize();//sets to unit vector
+            south_v_p.setLength(south_mag);//setting length of vector
+            // south_v_p.negate();
+
+            var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
+            north_v_p.normalize();//setting to unit
+            north_v_p.setLength(north_mag);//setting the length 
+            // north_v_p.negate();
+
+            var q=new Vector2(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
+            q.normalize();
+
+            var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+            var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+
+            var v2_x=p.x+coso*10;//finding the point nearby along the vector
+            var v2_y=p.y+sino*10;//finding the point nearby along the vector
+            //var v=new Vector2(0,0);
+            //v.addVectors(p,q);
     
+        
+            field.lineTo(v2_x,v2_y);//making the line
 
-// var cons=100;
-// const south_v=new Vector2(south_x,south_y);//south pole vector
-// const north_v=new Vector2(north_x,north_y);//north pole vector
+            if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
+                arrow(v2_x,v2_y,q.x,q.y);
+                stopper++;
+            }
+        
+            if(stopper_1==0&&v2_x>=w2)
+            {
+                arrow(v2_x,v2_y,q.x,q.y);
+                stopper_1++;
+            }
 
-//above two cordinates is the nearby point of north pole from where the line should start
-
-//app.ticker.add(function(){
-    var counter=0;
-
-    var p=new Vector2(v1_x,v1_y);
-    field.moveTo(p.x,p.y);//making the line
-    var stopper=0;
-	while(true){
-        if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x>w2)
-        {
-            break;
+            p.set(v2_x,v2_y);
+        
         }
+
+        v1_x=south_x+10*Math.cos(th);
+        v1_y=south_y+10*Math.sin(th);
         
+        counter=0;
+        stopper=0;
+
+        p.set(v1_x,v1_y);
+
+        field.moveTo(p.x,p.y);//making the line
+
+        while(true){
+
+            if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x<w2)
+            {
+                break;
+            }
         
-        var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
+            var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
+            var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
 
-        var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
+            var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
+            south_v_p.normalize();//sets to unit vector
+            south_v_p.setLength(south_mag);//setting length of vector
+            // south_v_p.negate();
 
-        var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
-        south_v_p.normalize();//sets to unit vector
-        south_v_p.setLength(south_mag);//setting length of vector
-        // south_v_p.negate();
+            var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
+            north_v_p.normalize();//setting to unit
+            north_v_p.setLength(north_mag);//setting the length 
+            // north_v_p.negate();
 
-        var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
-        north_v_p.normalize();//setting to unit
-        north_v_p.setLength(north_mag);//setting the length 
-        // north_v_p.negate();
-
-        var q=new Vector2(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
-        q.normalize();
-
-       // console.log(p);
-        //let dl = 1 pixel
-
+            var q=new Vector2(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
+            q.normalize();
         
-         var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-         var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+            var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+            var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
 
-         var v2_x=p.x+coso*10;//finding the point nearby along the vector
-         var v2_y=p.y+sino*10;//finding the point nearby along the vector
-        //var v=new Vector2(0,0);
-        //v.addVectors(p,q);
- 
-       
-        field.lineTo(v2_x,v2_y);//making the line
-        if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
-            arrow(v2_x,v2_y,q.x,q.y);
-            stopper++;
+            var v2_x=p.x-coso*10;//finding the point nearby along the vector
+            var v2_y=p.y-sino*10;//finding the point nearby along the vector
+
+            field.lineTo(v2_x,v2_y);//making the line
+
+            if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2)))
+            {
+                arrow(v2_x,v2_y,q.x,q.y);
+                stopper++;
+            }
+
+            p.set(v2_x,v2_y);
+
         }
-        
-        p.set(v2_x,v2_y);
-      
     }
-    v1_x=south_x+10*Math.cos(th);
-    v1_y=south_y+10*Math.sin(th);
-    
- counter=0;
-stopper=0;
- p.set(v1_x,v1_y);
-field.moveTo(p.x,p.y);//making the line
-while(true){
-    if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x<w2)
-    {
-        break;
-    }
-    
-    
-    var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
-
-    var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
-
-    var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
-    south_v_p.normalize();//sets to unit vector
-    south_v_p.setLength(south_mag);//setting length of vector
-    // south_v_p.negate();
-
-    var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
-    north_v_p.normalize();//setting to unit
-    north_v_p.setLength(north_mag);//setting the length 
-    // north_v_p.negate();
-
-    var q=new Vector2(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
-    q.normalize();
-
-   // console.log(p);
-    //let dl = 1 pixel
-
-    
-     var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-     var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-
-     var v2_x=p.x-coso*10;//finding the point nearby along the vector
-     var v2_y=p.y-sino*10;//finding the point nearby along the vector
-    //var v=new Vector2(0,0);
-    //v.addVectors(p,q);
-
-    field.lineTo(v2_x,v2_y);//making the line
-    if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
-        arrow(v2_x,v2_y,q.x,q.y);
-        stopper++;
-    }
-    p.set(v2_x,v2_y);
-
-}
-
-//})
-
-}
 }
 const needle:PIXI.Sprite=PIXI.Sprite.from("compass-needle.png");
 needle.anchor.set(0.5);
+
 // needle.height=200;
 // needle.width=166.66;
 
@@ -242,6 +250,8 @@ function moveneedle(e){
     needle.x=pos.x;
     needle.y=pos.y;
 }
+
 viewport.addChild(field);
 viewport.addChild(needle);
+
 fieldlines();
