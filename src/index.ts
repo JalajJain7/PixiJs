@@ -83,7 +83,8 @@ var north_y=h2;//this is the extreme y cordinate of north pole
 var cons=100;
 const south_v=new Vector2(south_x,south_y);//south pole vector
 const north_v=new Vector2(north_x,north_y);//north pole vector
-var q=new Vector2(0,0);
+var q=new Vector2(0,0);//field lines resultant vector
+var compass_vector=new Vector2(0,0);//vector of compass
 
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
@@ -236,7 +237,8 @@ needle.anchor.set(0.5);
 
 app.stage.on('click',moveneedle);
 
-function moveneedle(e){
+function moveneedle(e)
+{
     let pos=e.data.global;
     needle.x=pos.x;
     needle.y=pos.y;
