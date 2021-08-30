@@ -92,26 +92,26 @@ field.lineStyle(1, 0xFEEB77, 1);
 
 function arrow(val_x,val_y,r_v_x,r_v_y){
 
-var q=new Vector2(-r_v_x,-r_v_y);
-var q_p_p=new Vector2(-r_v_y,r_v_x);
-var q_p_n=new Vector2(r_v_y,-r_v_x);
-var f_a=new Vector2(q.x+q_p_p.x,q.y+q_p_p.y);
-var s_a=new Vector2(q.x+q_p_n.x,q.y+q_p_n.y);
+    var q=new Vector2(-r_v_x,-r_v_y);
+    var q_p_p=new Vector2(-r_v_y,r_v_x);
+    var q_p_n=new Vector2(r_v_y,-r_v_x);
+    var f_a=new Vector2(q.x+q_p_p.x,q.y+q_p_p.y);
+    var s_a=new Vector2(q.x+q_p_n.x,q.y+q_p_n.y);
 
-f_a.normalize();
-s_a.normalize();
+    f_a.normalize();
+    s_a.normalize();
 
-var coso=f_a.x;
-var sino=f_a.y;
+    var coso=f_a.x;
+    var sino=f_a.y;
 
-field.lineTo(val_x+5*coso,val_y+5*sino);
-field.moveTo(val_x,val_y);
+    field.lineTo(val_x+5*coso,val_y+5*sino);
+    field.moveTo(val_x,val_y);
 
-coso=s_a.x;
-sino=s_a.y;
+    coso=s_a.x;
+    sino=s_a.y;
 
-field.lineTo(val_x+5*coso,val_y+5*sino);
-field.moveTo(val_x,val_y);
+    field.lineTo(val_x+5*coso,val_y+5*sino);
+    field.moveTo(val_x,val_y);
 
 }
 
@@ -246,9 +246,8 @@ function moveneedle(e)
     p.set(needle.x,needle.y);
     fieldlines_calculator(p);
     var theta=q.angel_between(compass_vector);
-    needle.rotation+=theta;
+    needle.rotation=theta;
     compass_vector.set(q.x,q.y);
-
 }
 
 viewport.addChild(field);
