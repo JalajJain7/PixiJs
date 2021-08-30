@@ -272,7 +272,8 @@ const f = pane.addFolder({
   
   f.addInput(PARAMS, 'intensity',{
       max:100,
-      min:30
+      min:30,
+      step:2
   }).on('change', (ev) => {
       field.clear();
       field.lineStyle(1, 0xFEEB77, 1);
