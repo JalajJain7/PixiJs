@@ -4,9 +4,14 @@ import { Graphics, PI_2 } from 'pixi.js'
 import { Vector2 } from './vector'
 import {Pane} from 'tweakpane';
 
+const PARAMS = {
+    intensity: 50,
+    background: 0x6495ed
+  };
+
 const app = new PIXI.Application({
     view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-    backgroundColor: 0x6495ed,
+    backgroundColor: PARAMS.background,
     width:window.innerWidth,
     height:window.innerHeight,
     antialias:true
@@ -256,10 +261,7 @@ function moveneedle(e)
 viewport.addChild(field);
 viewport.addChild(needle);
 
-const PARAMS = {
-    intensity: 50,
-    background: {r: 255, g: 127, b: 0}
-  };
+
 
 fieldlines();
 
@@ -278,5 +280,9 @@ const f = pane.addFolder({
       field.clear();
       field.lineStyle(1, 0xFEEB77, 1);
     fieldlines();
-  });;
-  f.addInput(PARAMS, 'background');
+  });
+  f.addInput(PARAMS, 'background', {
+    view: 'color',});
+//   }).on('change', (ev) => {
+//     app.stage.render;
+// });
