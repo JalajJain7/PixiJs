@@ -112,10 +112,6 @@ field.moveTo(val_x,val_y);
 
 }
 
-function drawlines(){
-    
-}
-
 function fieldlines(){
 
     let N=30;
