@@ -77,34 +77,29 @@ const north_v=new Vector2(north_x,north_y);//north pole vector
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
 
-function arrow(val_x,val_y,m){
-var m1=(m-1)/(m+1);
-var px=0;
-var py=0;
-if(m>-1){
-    px=val_x+5*(1/Math.pow(1+Math.pow(m1,2),1/2));
-     py=val_y+5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
-}
-else{
-     px=val_x+5*(1/Math.pow(1+Math.pow(m1,2),1/2));
-     py=val_y-5*(m1/Math.pow(1+Math.pow(m1,2),1/2));
-}
+function arrow(val_x,val_y,r_v_x,r_v_y){
 
-field.lineTo(px,py);
-field.moveTo(val_x,val_y);
-var m2=(1+m)/(1-m);
-if(m>1)
-{
-     px=val_x+5*(1/Math.pow(1+Math.pow(m2,2),1/2));
-     py=val_y-5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
-}
-else{
-    px=val_x+5*(1/Math.pow(1+Math.pow(m2,2),1/2));
-    py=val_y+5*(m2/Math.pow(1+Math.pow(m2,2),1/2));
-}
+var q=new Vector2(-r_v_x,-r_v_y);
+var q_p_p=new Vector2(-r_v_y,r_v_x);
+var q_p_n=new Vector2(r_v_y,-r_v_x);
+var f_a=new Vector2(q.x+q_p_p.x,q.y+q_p_p.y);
+var s_a=new Vector2(q.x+q_p_n.x,q.y+q_p_n.y);
 
-field.lineTo(px,py);
+f_a.normalize();
+s_a.normalize();
+
+var coso=f_a.x;
+var sino=f_a.y;
+
+field.lineTo(val_x+5*coso,val_y+5*sino);
 field.moveTo(val_x,val_y);
+
+coso=s_a.x;
+sino=s_a.y;
+
+field.lineTo(val_x+5*coso,val_y+5*sino);
+field.moveTo(val_x,val_y);
+
 }
 
 
@@ -167,11 +162,10 @@ for(let th=0;th<=Math.PI*2;th+=dTh){
         //var v=new Vector2(0,0);
         //v.addVectors(p,q);
  
-        var m=sino/coso;
        
         field.lineTo(v2_x,v2_y);//making the line
         if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
-            arrow(v2_x,v2_y,m);
+            arrow(v2_x,v2_y,q.x,q.y);
             stopper++;
         }
         
@@ -221,10 +215,9 @@ while(true){
     //var v=new Vector2(0,0);
     //v.addVectors(p,q);
 
-    var m=sino/coso;
     field.lineTo(v2_x,v2_y);//making the line
     if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
-        arrow(v2_x,v2_y,m);
+        arrow(v2_x,v2_y,q.x,q.y);
         stopper++;
     }
     p.set(v2_x,v2_y);
