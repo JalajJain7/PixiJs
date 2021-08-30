@@ -113,6 +113,25 @@ field.moveTo(val_x,val_y);
 
 }
 
+function fieldlines_calculator(p){
+
+    var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
+    var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
+
+    var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
+    south_v_p.normalize();//sets to unit vector
+    south_v_p.setLength(south_mag);//setting length of vector
+    // south_v_p.negate();
+
+    var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
+    north_v_p.normalize();//setting to unit
+    north_v_p.setLength(north_mag);//setting the length 
+    // north_v_p.negate();
+
+    q.set(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
+    q.normalize();
+}
+
 function fieldlines(){
 
     let N=30;
@@ -141,21 +160,7 @@ function fieldlines(){
                 break;
             }
             
-            var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
-            var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
-
-            var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
-            south_v_p.normalize();//sets to unit vector
-            south_v_p.setLength(south_mag);//setting length of vector
-            // south_v_p.negate();
-
-            var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
-            north_v_p.normalize();//setting to unit
-            north_v_p.setLength(north_mag);//setting the length 
-            // north_v_p.negate();
-
-            q.set(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
-            q.normalize();
+            fieldlines_calculator(p);
 
             var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
             var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
@@ -199,22 +204,8 @@ function fieldlines(){
             {
                 break;
             }
-        
-            var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
-            var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
 
-            var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
-            south_v_p.normalize();//sets to unit vector
-            south_v_p.setLength(south_mag);//setting length of vector
-            // south_v_p.negate();
-
-            var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
-            north_v_p.normalize();//setting to unit
-            north_v_p.setLength(north_mag);//setting the length 
-            // north_v_p.negate();
-
-            q.set(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
-            q.normalize();
+            fieldlines_calculator(p);
         
             var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
             var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
