@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
 import { Graphics, PI_2 } from 'pixi.js'
 import { Vector2 } from './vector'
+import {Pane} from 'tweakpane';
 
 const app = new PIXI.Application({
     view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -136,7 +137,9 @@ function fieldlines_calculator(p){
 
 function fieldlines(){
 
-    let N=30;
+    // field.clear();
+
+    let N=Math.floor(PARAMS.intensity);
     let dTh=2*Math.PI/N;
 
     for(let th=0;th<=Math.PI*2;th+=dTh){
@@ -253,4 +256,26 @@ function moveneedle(e)
 viewport.addChild(field);
 viewport.addChild(needle);
 
+const PARAMS = {
+    intensity: 50,
+    background: {r: 255, g: 127, b: 0}
+  };
+
 fieldlines();
+
+const pane = new Pane();
+
+const f = pane.addFolder({
+    title: 'Title',
+    expanded: true,
+  });
+  
+  f.addInput(PARAMS, 'intensity',{
+      max:100,
+      min:30
+  }).on('change', (ev) => {
+      field.clear();
+      field.lineStyle(1, 0xFEEB77, 1);
+    fieldlines();
+  });;
+  f.addInput(PARAMS, 'background');
