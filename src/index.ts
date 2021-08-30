@@ -127,6 +127,9 @@ function fieldlines(){
         var stopper=0;
         var stopper_1=0;
 
+        var v2_x=0;
+        var v2_y=0;
+
         var p=new Vector2(v1_x,v1_y);
 
         field.moveTo(p.x,p.y);//making the line
@@ -157,8 +160,8 @@ function fieldlines(){
             var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
             var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
 
-            var v2_x=p.x+coso*10;//finding the point nearby along the vector
-            var v2_y=p.y+sino*10;//finding the point nearby along the vector
+            v2_x=p.x+coso*10;//finding the point nearby along the vector
+            v2_y=p.y+sino*10;//finding the point nearby along the vector
             //var v=new Vector2(0,0);
             //v.addVectors(p,q);
     
@@ -216,8 +219,8 @@ function fieldlines(){
             var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
             var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
 
-            var v2_x=p.x-coso*10;//finding the point nearby along the vector
-            var v2_y=p.y-sino*10;//finding the point nearby along the vector
+            v2_x=p.x-coso*10;//finding the point nearby along the vector
+            v2_y=p.y-sino*10;//finding the point nearby along the vector
 
             field.lineTo(v2_x,v2_y);//making the line
 
