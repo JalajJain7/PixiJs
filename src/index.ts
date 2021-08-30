@@ -84,7 +84,8 @@ var cons=100;
 const south_v=new Vector2(south_x,south_y);//south pole vector
 const north_v=new Vector2(north_x,north_y);//north pole vector
 var q=new Vector2(0,0);//field lines resultant vector
-var compass_vector=new Vector2(0,0);//vector of compass
+var compass_vector=new Vector2(0,-1);//vector of compass
+var p=new Vector2(0,0);
 
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
@@ -150,7 +151,7 @@ function fieldlines(){
         var v2_x=0;
         var v2_y=0;
 
-        var p=new Vector2(v1_x,v1_y);
+        p.set(v1_x,v1_y);
 
         field.moveTo(p.x,p.y);//making the line
     
@@ -242,6 +243,12 @@ function moveneedle(e)
     let pos=e.data.global;
     needle.x=pos.x;
     needle.y=pos.y;
+    p.set(needle.x,needle.y);
+    fieldlines_calculator(p);
+    var theta=q.angel_between(compass_vector);
+    needle.rotation+=theta;
+    compass_vector.set(q.x,q.y);
+
 }
 
 viewport.addChild(field);

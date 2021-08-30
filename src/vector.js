@@ -470,6 +470,13 @@ class Vector2 {
 		return this;
 
 	}
+	
+	angel_between(v)
+	{
+		var angel=Math.acos(this.dot(v)/(this.length()*v.length()));
+
+		return angel;
+	}
 
 }
 
