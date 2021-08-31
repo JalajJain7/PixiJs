@@ -263,7 +263,16 @@ function moveneedle(e)
     // needle.y=pos.y;
     p.set(pos.x,pos.y);
     fieldlines_calculator(p);
-    var theta=q.angel_between(compass_vector);
+
+    if(pos.x<=w2+200 && pos.x>=w2-200)
+    {
+        var theta=-q.angel_between(compass_vector);
+    }
+    else
+    {
+        var theta=q.angel_between(compass_vector);
+    }
+    
     // needle.rotation=theta;
     compass_vector.set(q.x,q.y);
     gsap.to(needle, {
