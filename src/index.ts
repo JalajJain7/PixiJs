@@ -3,13 +3,15 @@ import { Viewport } from 'pixi-viewport'
 import { Graphics, PI_2, Renderer } from 'pixi.js'
 import { Vector2 } from './vector'
 import {Pane} from 'tweakpane';
+import { charges } from './charges';
 // import {tweenManager} from 'pixi-tween';
 import gsap from "gsap";
 // var tweenManager = require('pixi-tween');
 
 const PARAMS = {
-    intensity: 50,
-    background: 0x6495ed
+    intensity: 4,
+    background: 0x6495ed,
+    fields:true,
   };
 
 const app = new PIXI.Application({
@@ -89,15 +91,22 @@ var north_y=h2;//this is the extreme y cordinate of north pole
 
 //the above co ordinates is obtained because we are workin acc to the point particle
 
-var cons=100;
-const south_v=new Vector2(south_x,south_y);//south pole vector
-const north_v=new Vector2(north_x,north_y);//north pole vector
-var q=new Vector2(0,0);//field lines resultant vector
+
 var compass_vector=new Vector2(0,1);//vector of compass
 var p=new Vector2(0,0);
+var r=new Vector2(0,0);
 
 var field=new Graphics();
 field.lineStyle(1, 0xFEEB77, 1);
+
+const charge_1=new charges(north_x,south_x,h2-50);
+const charge_2=new charges(north_x,south_x,h2-25);
+const charge_3=new charges(north_x,south_x,h2);
+const charge_4=new charges(north_x,south_x,h2+25);
+const charge_5=new charges(north_x,south_x,h2+50);
+
+const arr1=[h2-50,h2-25,h2,h2+25,h2+50];
+console.log(arr1);
 
 function arrow(val_x,val_y,r_v_x,r_v_y){
 
@@ -126,21 +135,15 @@ function arrow(val_x,val_y,r_v_x,r_v_y){
 
 function fieldlines_calculator(p){
 
-    var south_mag=cons/south_v.distanceToSquared(p);//constant that have to be multiplied with vector
-    var north_mag=cons/north_v.distanceToSquared(p);//constant that have to be multiplied with vector
+    var r1=charge_1.field(p);
+    var r2=charge_2.field(p);
+    var r3=charge_3.field(p);
+    var r4=charge_4.field(p);
+    var r5=charge_5.field(p);
 
-    var south_v_p=new Vector2(south_x-p.x,south_y-p.y);//vector from the nearby point tosouth pole
-    south_v_p.normalize();//sets to unit vector
-    south_v_p.setLength(south_mag);//setting length of vector
-    // south_v_p.negate();
-
-    var north_v_p=new Vector2(p.x-north_x,p.y-north_y);//vector from the nearby point to north pole
-    north_v_p.normalize();//setting to unit
-    north_v_p.setLength(north_mag);//setting the length 
-    // north_v_p.negate();
-
-    q.set(south_v_p.x+north_v_p.x,south_v_p.y+north_v_p.y);
-    q.normalize();
+    r.set(r1.x+r2.x+r3.x+r4.x+r5.x,r1.y+r2.y+r3.y+r4.y+r5.y);
+    r.normalize();
+    
 }
 
 function fieldlines(){
@@ -150,92 +153,95 @@ function fieldlines(){
     let N=Math.floor(PARAMS.intensity);
     let dTh=2*Math.PI/N;
 
-    for(let th=0;th<=Math.PI*2;th+=dTh){
-        
-        var v1_x=north_x+10*Math.cos(th);
-        var v1_y=north_y+10*Math.sin(th);
-        
-        var counter=0;
-        var stopper=0;
-        var stopper_1=0;
+    for(let i=0;i<5;i++){
 
-        var v2_x=0;
-        var v2_y=0;
-
-        p.set(v1_x,v1_y);
-
-        field.moveTo(p.x,p.y);//making the line
-    
-        while(true){
-
-            if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x>w2)
-            {
-                break;
-            }
+        for(let th=0;th<=Math.PI*2;th+=dTh){
             
-            fieldlines_calculator(p);
+            var v1_x=north_x+10*Math.cos(th);
+            var v1_y=arr1[i]+10*Math.sin(th);
+            
+            var counter=0;
+            var stopper=0;
+            var stopper_1=0;
 
-            var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-            var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+            var v2_x=0;
+            var v2_y=0;
 
-            v2_x=p.x+coso*10;//finding the point nearby along the vector
-            v2_y=p.y+sino*10;//finding the point nearby along the vector
-            //var v=new Vector2(0,0);
-            //v.addVectors(p,q);
-    
+            p.set(v1_x,v1_y);
+
+            field.moveTo(p.x,p.y);//making the line
         
-            field.lineTo(v2_x,v2_y);//making the line
+            while(true){
 
-            if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
-                arrow(v2_x,v2_y,q.x,q.y);
-                stopper++;
-            }
+                if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x>w2)
+                {
+                    break;
+                }
+                
+                fieldlines_calculator(p);
+
+                var coso=r.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+                var sino=r.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+
+                v2_x=p.x+coso*10;//finding the point nearby along the vector
+                v2_y=p.y+sino*10;//finding the point nearby along the vector
+                //var v=new Vector2(0,0);
+                //v.addVectors(p,q);
         
-            if(stopper_1==0&&v2_x>=w2)
-            {
-                arrow(v2_x,v2_y,q.x,q.y);
-                stopper_1++;
-            }
+            
+                field.lineTo(v2_x,v2_y);//making the line
 
-            p.set(v2_x,v2_y);
-        
-        }
+                if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2))){
+                    arrow(v2_x,v2_y,r.x,r.y);
+                    stopper++;
+                }
+            
+                if(stopper_1==0&&v2_x>=w2)
+                {
+                    arrow(v2_x,v2_y,r.x,r.y);
+                    stopper_1++;
+                }
 
-        v1_x=south_x+10*Math.cos(th);
-        v1_y=south_y+10*Math.sin(th);
-        
-        counter=0;
-        stopper=0;
-
-        p.set(v1_x,v1_y);
-
-        field.moveTo(p.x,p.y);//making the line
-
-        while(true){
-
-            if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x<w2)
-            {
-                break;
-            }
-
-            fieldlines_calculator(p);
-        
-            var coso=q.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-            var sino=q.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
-
-            v2_x=p.x-coso*10;//finding the point nearby along the vector
-            v2_y=p.y-sino*10;//finding the point nearby along the vector
-
-            field.lineTo(v2_x,v2_y);//making the line
-
-            if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2)))
-            {
-                arrow(v2_x,v2_y,q.x,q.y);
-                stopper++;
+                p.set(v2_x,v2_y);
+            
             }
 
-            p.set(v2_x,v2_y);
+            v1_x=south_x+10*Math.cos(th);
+            v1_y=arr1[i]+10*Math.sin(th);
+            
+            counter=0;
+            stopper=0;
 
+            p.set(v1_x,v1_y);
+
+            field.moveTo(p.x,p.y);//making the line
+
+            while(true){
+
+                if(counter++>300||0>=p.x||p.x>=2*window.innerWidth||-400>=p.y||p.y>=2*window.innerHeight||p.x<w2)
+                {
+                    break;
+                }
+
+                fieldlines_calculator(p);
+            
+                var coso=r.x;//m/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+                var sino=r.y;//1/Math.pow(1+Math.pow(m,2),1/2);//finding the point nearby along the vector
+
+                v2_x=p.x-coso*10;//finding the point nearby along the vector
+                v2_y=p.y-sino*10;//finding the point nearby along the vector
+
+                field.lineTo(v2_x,v2_y);//making the line
+
+                if(stopper==0&&(Math.pow(Math.pow(v2_x-w2,2)+Math.pow(v2_y-h2,2),1/2)>=(h2)))
+                {
+                    arrow(v2_x,v2_y,r.x,r.y);
+                    stopper++;
+                }
+
+                p.set(v2_x,v2_y);
+
+            }
         }
     }
 }
@@ -263,18 +269,26 @@ function moveneedle(e)
     // needle.y=pos.y;
     p.set(pos.x,pos.y);
     fieldlines_calculator(p);
+    // var theta=q.angel_between(compass_vector);
+    // if(q.dot(compass_vector)<0)
+    // {
+    //     var theta=-q.angel_between(compass_vector);
+    // }
+    // else{
+        
+    // }
 
     if(pos.x<=w2+200 && pos.x>=w2-200)
     {
-        var theta=-q.angel_between(compass_vector);
+        var theta=-r.angel_between(compass_vector);
     }
     else
     {
-        var theta=q.angel_between(compass_vector);
+        var theta=r.angel_between(compass_vector);
     }
-    
+    console.log(theta);
     // needle.rotation=theta;
-    compass_vector.set(q.x,q.y);
+    compass_vector.set(r.x,r.y);
     gsap.to(needle, {
         x: pos.x, y:pos.y, duration: 2.0, repeat: 0,yoyo: true,
     });
@@ -294,20 +308,23 @@ function moveneedle(e)
 viewport.addChild(field);
 viewport.addChild(needle);
 
+console.log("hello1");
 
 
 fieldlines();
 
+console.log("hello2");
+
 const pane = new Pane();
 
 const f = pane.addFolder({
-    title: 'Title',
+    title: 'Properties',
     expanded: true,
   });
   
   f.addInput(PARAMS, 'intensity',{
-      max:100,
-      min:30,
+      max:50,
+      min:2,
       step:2
   }).on('change', (ev) => {
       field.clear();
@@ -318,6 +335,16 @@ const f = pane.addFolder({
     view: 'color',//});
    }).on('change', (ev) => {
      app.render();
+ });
+ f.addInput(PARAMS,"fields").on('change',(ev)=>{
+if(PARAMS.fields==false){
+    field.clear();
+}
+else{
+    field.clear();
+    field.lineStyle(1, 0xFEEB77, 1);
+    fieldlines();
+}
  });
 
 // app.ticker.add(function(delta) {

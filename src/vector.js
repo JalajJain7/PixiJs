@@ -473,11 +473,9 @@ class Vector2 {
 	
 	angel_between(v)
 	{
-		var angel=Math.acos(this.dot(v)/(this.length()*v.length()));
-
+		var angel=Math.abs(Math.acos(this.dot(v)/(this.length()*v.length())));
 		return angel;
 	}
-
 }
 
 Vector2.prototype.isVector2 = true;
