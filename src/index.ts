@@ -3,6 +3,9 @@ import { Viewport } from 'pixi-viewport'
 import { Graphics, PI_2 } from 'pixi.js'
 import { Vector2 } from './vector'
 import {Pane} from 'tweakpane';
+import {tweenManager} from 'pixi-tween';
+import gsap from "gsap";
+// var tweenManager = require('pixi-tween');
 
 const PARAMS = {
     intensity: 50,
@@ -237,7 +240,11 @@ function fieldlines(){
     }
 }
 const needle:PIXI.Sprite=PIXI.Sprite.from("compass-needle.png");
+needle.height = 100;
+needle.width = 140;
 needle.anchor.set(0.5);
+
+// var tween = PIXI.tweenManager.createTween(needle);
 
 // needle.height=200;
 // needle.width=166.66;
@@ -248,14 +255,31 @@ app.stage.on('click',moveneedle);
 
 function moveneedle(e)
 {
+
+
     let pos=e.data.global;
-    needle.x=pos.x;
-    needle.y=pos.y;
+    
+    // needle.x=pos.x;
+    // needle.y=pos.y;
     p.set(needle.x,needle.y);
     fieldlines_calculator(p);
     var theta=q.angel_between(compass_vector);
-    needle.rotation=theta;
+    // needle.rotation=theta;
     compass_vector.set(q.x,q.y);
+    gsap.to(needle, {
+        x: pos.x, y:pos.y, duration: 2.0, repeat: 0,yoyo: true,
+    });
+
+
+    setTimeout( () => { 
+        gsap.to(needle, {
+            rotation:theta, duration: 2.0, repeat: 0,yoyo: true, ease: "bounce.out"
+        });
+     }, 2000 );
+
+    // gsap.to(needle, {
+    //     rotation:theta, duration: 2.0, repeat: 0,yoyo: true, ease: "bounce.out"
+    // });
 }
 
 viewport.addChild(field);
@@ -285,4 +309,8 @@ const f = pane.addFolder({
     view: 'color',});
 //   }).on('change', (ev) => {
 //     app.stage.render;
+// });
+
+// app.ticker.add(function(delta) {
+//     PIXI.tweenManager.update();
 // });
