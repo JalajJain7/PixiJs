@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
-import { Graphics, PI_2 } from 'pixi.js'
+import { Graphics, PI_2, Renderer } from 'pixi.js'
 import { Vector2 } from './vector'
 import {Pane} from 'tweakpane';
 // import {tweenManager} from 'pixi-tween';
@@ -17,7 +17,7 @@ const app = new PIXI.Application({
     backgroundColor: PARAMS.background,
     width:window.innerWidth,
     height:window.innerHeight,
-    antialias:true
+    antialias:true,
 })
 
 app.stage.interactive=true;
@@ -315,10 +315,10 @@ const f = pane.addFolder({
     fieldlines();
   });
   f.addInput(PARAMS, 'background', {
-    view: 'color',});
-//   }).on('change', (ev) => {
-//     app.stage.render;
-// });
+    view: 'color',//});
+   }).on('change', (ev) => {
+     app.render();
+ });
 
 // app.ticker.add(function(delta) {
 //     PIXI.tweenManager.update();
