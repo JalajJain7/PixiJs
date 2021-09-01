@@ -143,7 +143,7 @@ function fieldlines_calculator(p){
 
     r.set(r1.x+r2.x+r3.x+r4.x+r5.x,r1.y+r2.y+r3.y+r4.y+r5.y);
     r.normalize();
-    
+    return r.clone();
 }
 
 function fieldlines(){
@@ -296,7 +296,7 @@ function moveneedle(e)
 
     setTimeout( () => { 
         gsap.to(needle, {
-            rotation:theta, duration: 2.0, repeat: 0,yoyo: true, ease: "bounce.out"
+            rotation:fieldlines_calculator(pos).angle()+Math.PI/2, duration: 2.0, repeat: 0,yoyo: true, ease: "bounce.out"
         });
      }, 2000 );
 
